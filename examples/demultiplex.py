@@ -13,7 +13,6 @@ class MatchSequence(RollableFunction):
     def __call__(self, sequence):
         return np.all(sequence == self._matching_sequence, axis=-1)
 
-
 matcher = MatchSequence("CG")
 
 #with bionp.open('example_1_R1_001.fastq') as source_R1:
@@ -28,7 +27,6 @@ for chunk in source_R1:
 
 outfile.close()
 source_R1.close()
-
 
 print(extract)
 
