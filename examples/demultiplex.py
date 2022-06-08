@@ -4,6 +4,7 @@ from bionumpy.sequences import as_sequence_array
 import numpy as np
 import bionumpy as bionp
 
+
 class MatchSequence(RollableFunction):
     def __init__(self, matching_sequence):
         self._matching_sequence = as_sequence_array(matching_sequence)
@@ -11,6 +12,7 @@ class MatchSequence(RollableFunction):
 
     def __call__(self, sequence):
         return np.all(sequence == self._matching_sequence, axis=-1)
+
 
 matcher = MatchSequence("CG")
 
@@ -26,6 +28,7 @@ for chunk in source_R1:
 
 outfile.close()
 source_R1.close()
+
 
 print(extract)
 
