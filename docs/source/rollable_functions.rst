@@ -6,7 +6,7 @@ In many cases, we want to take a simple function mapping a sequence to some scal
 * Use a position weight matrix to compute a score for a sequence
 * Find all occurances of a substring in a sequence set
 
-bioNumpy provides this functionality throught the `RollableFunction` class. All you have to to is subclass the `RollableFunction` class, and write a broadcastable version of the sequence function as the `__call__` method. A call to the `rolling_window` method will then apply the function to all the subsequences of length `window_size` in the sequence set. `window_size` can either be set as `self.window_size` or passed as argument to the `rolling_window` method.
+bioNumpy provides this functionality throught the `RollableFunction` class. All you have to do is subclass the `RollableFunction` class, and write a broadcastable version of the sequence function as the `__call__` method. A call to the `rolling_window` method will then apply the function to all the subsequences of length `window_size` in the sequence set. `window_size` can either be set as `self.window_size` or passed as argument to the `rolling_window` method.
 
 For instance, if we want to check for instances of "CGGT" in a set of sequences, we can use the following::
 
@@ -28,7 +28,7 @@ The `__call__` function here just checks that all the letters in the sequence ar
     >>> match("CGGT")
     Sequence(True)
 
-Giving a sequence of different length to the `__call__` function returns `False`, since the sequneces are then not equal::
+Giving a sequence of different length to the `__call__` function returns `False`, since the sequences are then not equal::
 
     >>> match("CGGTA")
     <stdin>:7: DeprecationWarning: elementwise comparison failed; this will raise an error in the future.
