@@ -22,6 +22,11 @@ def test_buffer_read_chunks(buffer_name):
     data = np.concatenate(list(NpDataclassReader(NumpyFileReader(io_obj, buf_type)).read_chunks()))
     assert list(data) == true_data
 
+    with pytest.raises(RuntimeError):
+        text = text[11:]
+        io_obj = BytesIO(bytes(text, encoding="utf8"))
+        list(NpDataclassReader(NumpyFileReader(io_obj, buf_type)).read_chunks())
+
 
 def test_read_big_fastq():
     io_obj = BytesIO(bytes(big_fastq_text*1000, encoding="utf8"))

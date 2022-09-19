@@ -26,7 +26,7 @@ class NpDataclassReader:
         return self._reader.read().get_data()
 
     def read_chunks(self):
-        return NpDataclassStream((chunk.get_data() for chunk in self._reader.read_chunks()), buffer_type=self._reader._buffer_type)
+        return NpDataclassStream(self._reader.get_data_generator_from_chunks(), buffer_type=self._reader._buffer_type)
 
     def __iter__(self):
         return self.read_chunks()

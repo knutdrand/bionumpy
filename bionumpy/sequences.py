@@ -104,7 +104,7 @@ class NumericEncodedRaggedArray(EncodedRaggedArray):
 
 def create_sequence_array_from_already_encoded_data(data, encoding):
     assert isinstance(data, (np.ndarray, RaggedArray))
-    return Seqeunces(data._data, data.shape, encoding=encoding)
+    return Sequences(data._data, data.shape, encoding=encoding)
 
 def as_encoded_sequence_array(s, encoding):
     s = as_sequence_array(s)

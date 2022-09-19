@@ -69,7 +69,7 @@ class NumpyFileReader:
         self._remove_initial_comments()
         header_data = self._buffer_type.read_header(self._file_obj)
         chunk = np.frombuffer(self._file_obj.read(),dtype=np.uint8)
-        chunk, _  = self.__add_newline_to_end(chunk, chunk.size)
+        chunk, _ = self.__add_newline_to_end(chunk, chunk.size)
         return self._buffer_type.from_raw_buffer(chunk, header_data=header_data)
 
     def read_chunks(self):
@@ -89,6 +89,18 @@ class NumpyFileReader:
             chunk = self.__get_buffer()
         if chunk is not None and chunk.size:
             yield self._buffer_type.from_raw_buffer(chunk, header_data=header_data)
+
+    def get_data_generator_from_chunks(self):
+        index = 0
+        try:
+            for chunk in self.read_chunks():
+                yield chunk.get_data()
+                index += 1
+        except Exception as e:
+            print(e)
+            bytes_read = (index - 1) * self._chunk_size if index > 0 else 0
+            raise RuntimeError(f"An error occurred while reading the file {self._f_name}. Bytes read: {bytes_read}. "
+                               f"For more details, see the error message: {str(e)}")
 
     def __add_newline_to_end(self, chunk, bytes_read):
         if chunk[bytes_read - 1] != ord("\n"):
