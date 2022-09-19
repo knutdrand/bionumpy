@@ -196,6 +196,7 @@ class OneLineBuffer(FileBuffer):
             + 1
         )
         assert np.all(self._data[header_idxs] == self.HEADER)
+        assert self._data[0] == self.HEADER, (str(self._data), self.HEADER)
         self._is_validated = True
 
 
