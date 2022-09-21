@@ -1,6 +1,38 @@
 import numpy as np
 
 
+class NpDataClassFieldStream(np.lib.mixins.NDArrayOperatorsMixin):
+    def __init__(self, stream):
+        self._stream = stream
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self._stream)
+
+    def __getitem__(self, item):
+        if isinstance(item, NpDataClassFieldStream):
+            return NpDataClassFieldStream((e[i] for e, i in zip(self, item)))
+
+        return NpDataClassFieldStream(e[item] for e in self)
+
+    def __eq__(self, other):
+        return (e == other for e in self)
+
+    def __add__(self, other):
+        return NpDataClassFieldStream((e + other for e in self))
+
+    def __iadd__(self, other):
+        return NpDataClassFieldStream((e.__iadd__(other) for e in self))
+
+    def __array_function__(self, func, types, args, kwargs):
+        return NpDataClassFieldStream((e.__array_function__(func, types, args, kwargs) for e in self))
+
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        return NpDataClassFieldStream((e.__array_ufunc__(ufunc, method, *inputs, **kwargs) for e in self))
+
+
 class NpDataclassStream:
     """
     Class to hold a stream/generator of npdataclass objects.
@@ -47,6 +79,11 @@ class NpDataclassStream:
 
     def join(self):
         return np.concatenate(list(self))
+
+    def __getattr__(self, item):
+        fields = (getattr(e, item) for e in self)
+        return NpDataClassFieldStream(fields)
+
 
 
 def streamable(func):
