@@ -1,3 +1,7 @@
+npstructures/
+main.py
+testreads20m.fa
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -63,7 +67,10 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs_source/_build/
+docs/*
+docs_source/stubs
+_autosummary
 
 # PyBuilder
 target/
@@ -104,3 +111,22 @@ ENV/
 # IDE settings
 *~*
 *#*
+.idea/
+
+# latex
+*.aux
+*.out
+*.fls
+*.bat
+*.fdb_latexmk
+
+# profiling
+*.prof
+
+*.tmp
+
+
+# benchmark results
+benchmarks/*report_*.html
+benchmarks/*report_*.md
+benchmarks/.snakemake

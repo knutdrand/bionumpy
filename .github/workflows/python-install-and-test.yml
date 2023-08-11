@@ -5,34 +5,37 @@ name: Build and test
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
     strategy:
         matrix:
             os: [ubuntu-latest, windows-latest, macos-latest]
             python-version: ["3.7", "3.8", "3.9", "3.10"]
-    
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: "${{ matrix.python-version }}"
+    - name: Install npstructures dev
+      if: github.ref != 'refs/heads/master'
+      run: |
+        pip install git+https://github.com/bionumpy/npstructures.git/@dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest
+        pip install biopython
+        pip install -r requirements_dev.txt
+        #pip install matplotlib
         pip install .
-    - name: Test with pytest
+    - name: Run pytest and doctest
       run: |
-        pytest
+        ./run_tests
